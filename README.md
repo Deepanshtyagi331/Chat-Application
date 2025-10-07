@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Connectify - Real-Time Chat Application
 
 ![Connectify Demo](./docs/demo.png)
@@ -341,3 +342,7 @@ For support, email [tyagideepansh60@gmail.com](mailto:tyagideepansh60@gmail.com)
 ---
 
 **Connectify** - Stay connected, stay real.
+=======
+# Chat Application
+A full-stack real-time chat application built with Node.js, WebRTC, and Socket.IO — featuring instant messaging, voice & video calls, and modern UI.
+>>>>>>> 87a765c315db37d7fac1f48fdd66ea78e714fa01
