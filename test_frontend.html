@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Registration</title>
+</head>
+<body>
+    <h1>Test Registration</h1>
+    <button onclick="testRegistration()">Test Registration</button>
+    <div id="result"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function testRegistration() {
+            const resultDiv = document.getElementById('result');
+            try {
+                resultDiv.innerHTML = 'Testing registration...';
+                
+                const response = await axios.post('http://localhost:3001/api/auth/register', {
+                    name: 'Frontend Test User 4',
+                    email: 'frontend4@example.com',
+                    password: 'password123'
+                });
+                
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(response.data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<pre>Error: ' + JSON.stringify(error.response?.data || error.message, null, 2) + '</pre>';
+            }
+        }
+    </script>
+</body>
+</html>

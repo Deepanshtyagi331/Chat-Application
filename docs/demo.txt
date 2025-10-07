@@ -1,0 +1,2 @@
+This is a placeholder for the demo image.
+In a real application, this would be an actual screenshot of the Connectify chat interface.

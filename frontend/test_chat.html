@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Test</title>
+</head>
+<body>
+    <h1>Chat Test</h1>
+    <button onclick="testUserSearch()">Test User Search</button>
+    <button onclick="testCreateChat()">Test Create Chat</button>
+    <div id="result"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Get token from localStorage (assuming you're logged in)
+        const token = localStorage.getItem('token');
+        
+        async function testUserSearch() {
+            const resultDiv = document.getElementById('result');
+            try {
+                resultDiv.innerHTML = 'Testing user search...';
+                
+                const response = await axios.get('http://localhost:3000/api/users?search=', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                resultDiv.innerHTML = '<pre>User search successful: ' + JSON.stringify(response.data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<pre>Error: ' + JSON.stringify(error.response?.data || error.message, null, 2) + '</pre>';
+                console.error('Full error:', error);
+            }
+        }
+        
+        async function testCreateChat() {
+            const resultDiv = document.getElementById('result');
+            try {
+                resultDiv.innerHTML = 'Testing create chat...';
+                
+                // Get the first user ID from the previous search
+                const userResponse = await axios.get('http://localhost:3000/api/users?search=', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (userResponse.data.users.length > 0) {
+                    const userId = userResponse.data.users[0]._id;
+                    
+                    const response = await axios.post('http://localhost:3000/api/chats', {
+                        userId: userId
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    resultDiv.innerHTML = '<pre>Chat creation successful: ' + JSON.stringify(response.data, null, 2) + '</pre>';
+                } else {
+                    resultDiv.innerHTML = '<pre>No users found to create chat with</pre>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<pre>Error: ' + JSON.stringify(error.response?.data || error.message, null, 2) + '</pre>';
+                console.error('Full error:', error);
+            }
+        }
+    </script>
+</body>
+</body>
+</html>

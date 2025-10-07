@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:disabled { background: #ccc; }
+        .error { color: red; margin: 10px 0; }
+        .success { color: green; margin: 10px 0; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Registration Test</h1>
+    
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" required>
+        </div>
+        
+        <button type="submit" id="submitBtn">Register</button>
+    </form>
+    
+    <div id="message"></div>
+    <div id="log" class="log"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const form = document.getElementById('registrationForm');
+        const messageDiv = document.getElementById('message');
+        const logDiv = document.getElementById('log');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        function log(message) {
+            const time = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div>[${time}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        async function registerUser(name, email, password) {
+            try {
+                log(`Sending registration request to http://localhost:3001/api/auth/register`);
+                log(`Payload: ${JSON.stringify({ name, email, password })}`);
+                
+                const response = await axios.post('http://localhost:3001/api/auth/register', {
+                    name,
+                    email,
+                    password
+                });
+                
+                log(`Registration successful: ${JSON.stringify(response.data)}`);
+                return { success: true, data: response.data };
+            } catch (error) {
+                log(`Registration failed: ${JSON.stringify(error.response?.data || error.message)}`);
+                return { 
+                    success: false, 
+                    message: error.response?.data?.message || error.message || 'Registration failed'
+                };
+            }
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Clear previous messages
+            messageDiv.innerHTML = '';
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                messageDiv.innerHTML = '<div class="error">Passwords do not match</div>';
+                return;
+            }
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering...';
+            
+            log('Form submitted');
+            
+            // Attempt registration
+            const result = await registerUser(name, email, password);
+            
+            if (result.success) {
+                messageDiv.innerHTML = '<div class="success">Registration successful!</div>';
+            } else {
+                messageDiv.innerHTML = `<div class="error">Registration failed: ${result.message}</div>`;
+            }
+            
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Register';
+        });
+        
+        log('Page loaded');
+    </script>
+</body>
+</html>

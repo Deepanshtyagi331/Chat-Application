@@ -1,0 +1,35 @@
+{
+  "name": "connectify-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Frontend for Connectify - Real-time chat application with video & voice calling",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "chat",
+    "webrtc",
+    "socketio",
+    "react",
+    "tailwindcss"
+  ],
+  "author": "Deepanshu Tyagi",
+  "license": "MIT",
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "axios": "^1.12.2",
+    "postcss": "^8.5.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.3",
+    "socket.io-client": "^4.8.1",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "^7.1.9"
+  }
+}
